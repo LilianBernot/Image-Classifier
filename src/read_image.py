@@ -44,6 +44,9 @@ def move_folder_images(folder_path: str, periods_file:str):
 
     explored_images: list[str] = []
     for image_name in os.listdir(folder_path):
+        if image_name[-4::] == '.txt':
+            # It's the periods file, we don't want to move it...
+            continue
         if not os.path.isfile(os.path.join(folder_path, image_name)):
             # If it's a folder, we don't look in it for now. 
             # TODO : recursively check in the folders. Has to be a command line option
@@ -68,7 +71,7 @@ def move_folder_images(folder_path: str, periods_file:str):
 
 if __name__ == "__main__":
     import sys
-    
+
     DEFAULT_PERIOD_FILE_NAME='periods.txt'
     root_folder = sys.argv[1]
     periods_file_name = sys.argv[2] if len(sys.argv) >= 3 else DEFAULT_PERIOD_FILE_NAME
