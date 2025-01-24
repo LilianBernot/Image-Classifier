@@ -55,7 +55,7 @@ def plot_clusters(dates, clusters):
     # Overlay cluster boundaries
     cluster_periods = get_cluster_periods(clusters=clusters)
     for label, start, end in cluster_periods:
-        plt.axvspan(start, end, color='orange', alpha=0.3, label=f'Cluster {label}')
+        plt.axvspan(start, end, color='orange', alpha=0.3, label=f'Cluster {label}') # type: ignore
 
     # Formatting
     plt.xlabel('Date')
