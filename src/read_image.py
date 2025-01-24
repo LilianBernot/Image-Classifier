@@ -27,20 +27,20 @@ def get_datetime_image(image_path:str) -> str | None:
 
 
 # Iterate through all files in the folder
-def get_periods_from_images(folder_path, images: list[str]) -> list[PERIOD | None]:
+def get_periods_from_images(folder_path, images: list[str], periods_file) -> list[PERIOD | None]:
     
     dates: list[str|None] = []
     for image_name in images:
         image_path = os.path.join(folder_path, image_name)
         dates.append(get_datetime_image(image_path))
 
-    periods = get_periods('periods.txt')
+    periods = get_periods(periods_file)
 
     fitting_periods = get_fitting_periods(periods_list=periods, dates=dates)
 
     return fitting_periods
 
-def move_folder_images(folder_path: str):
+def move_folder_images(folder_path: str, periods_file:str):
 
     explored_images: list[str] = []
     for image_name in os.listdir(folder_path):
@@ -50,7 +50,7 @@ def move_folder_images(folder_path: str):
             continue
         explored_images.append(image_name)
 
-    fitting_periods = get_periods_from_images(folder_path, explored_images)
+    fitting_periods = get_periods_from_images(folder_path, explored_images, periods_file)
 
     issues: list[str] = []
     for index, image_name in enumerate(explored_images):
@@ -68,4 +68,13 @@ def move_folder_images(folder_path: str):
 
 if __name__ == "__main__":
     import sys
-    move_folder_images(sys.argv[1])
+    
+    DEFAULT_PERIOD_FILE_NAME='periods.txt'
+    root_folder = sys.argv[1]
+    periods_file_name = sys.argv[2] if len(sys.argv) >= 3 else DEFAULT_PERIOD_FILE_NAME
+    periods_file = os.path.join(root_folder, periods_file_name)
+
+    if not os.path.exists(periods_file):
+        print(f"ERROR : Period file {periods_file} could not be found. Please consider initializing project before running this command.")
+    else:
+        move_folder_images(root_folder, periods_file)
