@@ -1,9 +1,10 @@
 import os
 from PIL import Image
 from PIL.ExifTags import TAGS
-from read_periods import get_periods
+from read_periods import get_periods, get_period_folder_name
 from utils_dates import get_fitting_periods
 from env import PERIOD
+from move_file import move_file
 
 # Specify the folder path
 folder_path = "./data"
@@ -26,10 +27,11 @@ def get_datetime_image(image_path:str) -> str | None:
 
 
 # Iterate through all files in the folder
-def get_periods_from_images(images: list[str]) -> list[PERIOD | None]:
-
+def get_periods_from_images(folder_path, images: list[str]) -> list[PERIOD | None]:
+    
     dates: list[str|None] = []
-    for image_path in images:
+    for image_name in images:
+        image_path = os.path.join(folder_path, image_name)
         dates.append(get_datetime_image(image_path))
 
     periods = get_periods('periods.txt')
@@ -41,12 +43,23 @@ def get_periods_from_images(images: list[str]) -> list[PERIOD | None]:
 def get_periods_folder_images(folder_path: str):
 
     explored_images: list[str] = []
-    for filename in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, filename)
-        explored_images.append(file_path)
+    for image_name in os.listdir(folder_path):
+        explored_images.append(image_name)
 
-    fitting_periods = get_periods_from_images(explored_images)
+    fitting_periods = get_periods_from_images(folder_path, explored_images)
 
-    print(fitting_periods)
+    issues: list[str] = []
+    for index, image_name in enumerate(explored_images):
+        period = fitting_periods[index]
+        if not period:
+            issues.append(os.path.join(folder_path, image_name))
+        else:
+            fitting_folder = get_period_folder_name(period)
+            move_file(os.path.join(folder_path, image_name), os.path.join(fitting_folder, image_name))
+
+    if issues:
+        print(f"We got issues with the following images : {issues}. Impossible to find a corresponding period.")
+    else:
+        print("No issues, all images moved correctly !")
 
 get_periods_folder_images(folder_path)
