@@ -1,7 +1,7 @@
 import os
 from PIL import Image
 from PIL.ExifTags import TAGS
-from read_periods import get_periods, get_period_folder_name
+from read_periods import get_periods, get_period_folder_name, create_periods_folders
 from utils_dates import get_fitting_periods
 from env import PERIOD
 from move_file import move_file
@@ -80,4 +80,5 @@ if __name__ == "__main__":
     if not os.path.exists(periods_file):
         print(f"ERROR : Period file {periods_file} could not be found. Please consider initializing project before running this command.")
     else:
+        create_periods_folders(periods_file=periods_file, root_folder=root_folder)
         move_folder_images(root_folder, periods_file)

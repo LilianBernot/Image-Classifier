@@ -2,9 +2,6 @@ import re
 import os
 from env import PERIOD
 
-# Path to the periods file
-periods_file = "periods.txt"
-
 def get_periods(periods_file: str) -> list[PERIOD]:
 
     # Regular expression to match the date range: "YYYY-MM-DD to YYYY-MM-DD"
@@ -47,11 +44,11 @@ def get_period_folder_name(period:PERIOD) -> str:
 
     return newpath
 
-def create_periods_folders(periods_data:list[PERIOD], root_folder='.'):
+def create_periods_folders(periods_file:str, root_folder='.'):
+
+    periods_data = get_periods(periods_file)
     for period in periods_data:
         newpath = os.path.join(root_folder, get_period_folder_name(period))
 
         if not os.path.exists(newpath):
             os.makedirs(newpath)
-
-create_periods_folders(get_periods(periods_file), root_folder='./data')
