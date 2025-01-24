@@ -1,10 +1,11 @@
 import re
 import os
+from env import PERIOD
 
 # Path to the periods file
 periods_file = "periods.txt"
 
-def get_periods(periods_file):
+def get_periods(periods_file: str) -> list[PERIOD]:
 
     # Regular expression to match the date range: "YYYY-MM-DD to YYYY-MM-DD"
     date_pattern = r"(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})"
@@ -12,7 +13,7 @@ def get_periods(periods_file):
     location_pattern = r"=\s*(.+)"
 
     # List to store the extracted date periods
-    date_periods = []
+    date_periods: list[PERIOD] = []
 
     # Open and process the file
     with open(periods_file, "r") as file:
@@ -29,18 +30,26 @@ def get_periods(periods_file):
             location_match = re.search(location_pattern, line)
             location = location_match.group(1) if location_match else None
 
+            if not isinstance(start_date, str) or not isinstance(end_date, str):
+                raise ValueError(f"The period [{line}] is not recognized.")
+            
             date_periods.append((start_date, end_date, location))
 
     return date_periods
 
-def create_periods_folders(periods_data:list[tuple[str, str, str]]):
+def get_period_folder_name(period:PERIOD) -> str:
+    start, end, location = period
+    if location:
+        # convert tolcation to Snakecase
+        newpath = location[0].upper() + location[1:].lower()
+    else:
+        newpath = start + '_' + end
 
-    for start, end, location in periods_data:
-        if location:
-            # convert tolcation to Snakecase
-            newpath = location[0].upper() + location[1:].lower()
-        else:
-            newpath = start + '_' + end
+    return newpath
+
+def create_periods_folders(periods_data:list[PERIOD]):
+    for period in periods_data:
+        newpath = get_period_folder_name(period)
 
         if not os.path.exists(newpath):
             os.makedirs(newpath)
