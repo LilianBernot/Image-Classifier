@@ -1,6 +1,9 @@
 import os
 
 def create_template_file(root_folder:str, template_file:str):
+    """
+    Creates the template periods file.
+    """
     template_content = (
         "# Time Periods Template\n"
         "# Enter periods of time in the format: YYYY-MM-DD to YYYY-MM-DD\n"

@@ -10,6 +10,12 @@ from move_file import move_file
 folder_path = "./data"
 
 def get_datetime_image(image_path:str) -> str | None:
+    """
+    Get the date of creation of an image.
+
+    Returns : 
+        - str : the date as a string, formatted in YYYY-MM-DD
+    """
     # open the image
     image = Image.open(image_path)
     
@@ -28,7 +34,15 @@ def get_datetime_image(image_path:str) -> str | None:
 
 # Iterate through all files in the folder
 def get_periods_from_images(folder_path, images: list[str], periods_file) -> list[PERIOD | None]:
-    
+    """
+    Gets periods that fit the given images.
+
+    variables : 
+        - images : list of names of the different images to compute
+
+    Returns : 
+        - list[PERIOD] : a list of periods, same length as the entry
+    """
     dates: list[str|None] = []
     for image_name in images:
         image_path = os.path.join(folder_path, image_name)
@@ -41,7 +55,13 @@ def get_periods_from_images(folder_path, images: list[str], periods_file) -> lis
     return fitting_periods
 
 def move_folder_images(folder_path: str, periods_file:str):
+    """
+    Moves the image of a folder inside their fitting period folders.
 
+    Variables : 
+        - folder_path : the folder to compute the images from
+        - periods_file : the period file defined by the user
+    """
     explored_images: list[str] = []
     for image_name in os.listdir(folder_path):
         if image_name[-4::] == '.txt':

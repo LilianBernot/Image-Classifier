@@ -2,6 +2,9 @@ from datetime import datetime
 from env import PERIOD
 
 def convert_str_to_datetime(date) -> datetime:
+    """
+    Converts a string at the format YYYY-MM-DD to datetime.
+    """
     # Convert the strings to datetime objects
     try:
         date_format = "%Y-%m-%d"  # Format matches "YYYY-MM-DD"
@@ -11,7 +14,12 @@ def convert_str_to_datetime(date) -> datetime:
         return datetime.strptime(date, date_format) 
 
 def check_date_is_in_period(period:tuple[datetime, datetime], date:str | datetime | None) -> bool:
-
+    """
+    Checks if a given date is in a given period.
+    Checks that :
+        - date >= start
+        - date <= end
+    """
     if not date:
         return False
     
@@ -24,7 +32,13 @@ def check_date_is_in_period(period:tuple[datetime, datetime], date:str | datetim
     return is_sup and is_inf
 
 def get_fitting_periods(periods_list: list[PERIOD], dates:list[str|None]) -> list[PERIOD | None]:
+    """
+    Gets the periods that fits each given date.
 
+    Variables :
+        - dates : dates to find a period to
+        - period : a list of periods to look in
+    """
     periods_list_datetime: list[tuple[datetime, datetime]] = []
     for start, end, _ in periods_list:
         periods_list_datetime.append((convert_str_to_datetime(start), convert_str_to_datetime(end)))

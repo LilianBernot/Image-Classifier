@@ -3,6 +3,12 @@ import os
 from env import PERIOD
 
 def check_overlapping_periods(periods:list[PERIOD]):
+    """
+    Checks that the defined periods are not overlapping.
+    We check that we don't have : 
+        - start date > end date for a given period (not a reversed period)
+        - if start_i < start_j, then end_i < end_j (periods do not cross)
+    """
     for i in range(len(periods)):
         if periods[i][0] > periods[i][1]:
             raise ValueError(f"Period {periods[i]} has end date before starting date !")
@@ -17,7 +23,14 @@ def check_overlapping_periods(periods:list[PERIOD]):
     
 
 def get_periods(periods_file: str) -> list[PERIOD]:
-
+    """
+    Gets periods from the period file.
+    Parses the period file to retrieve the periods that are written in the format :
+        YYYY-MM-DD to YYYY-MM-DD = Location
+    
+    Returns : 
+        - list[PERIOD] : the list of parsed periods
+    """
     # Regular expression to match the date range: "YYYY-MM-DD to YYYY-MM-DD"
     date_pattern = r"(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})"
     # regular expression to match the location "= Location"
@@ -51,6 +64,13 @@ def get_periods(periods_file: str) -> list[PERIOD]:
     return date_periods
 
 def get_period_folder_name(period:PERIOD) -> str:
+    """
+    Creates a folder name from a period.
+    Uses Location if exists, otherwise start_end.
+
+    Returns :
+        - str : the created folder name.
+    """
     start, end, location = period
     if location:
         # convert tolcation to Snakecase
@@ -61,7 +81,9 @@ def get_period_folder_name(period:PERIOD) -> str:
     return newpath
 
 def create_periods_folders(periods_file:str, root_folder='.'):
-
+    """
+    Creates the folders for the given periods at the root_folder.
+    """
     periods_data = get_periods(periods_file)
     for period in periods_data:
         newpath = os.path.join(root_folder, get_period_folder_name(period))

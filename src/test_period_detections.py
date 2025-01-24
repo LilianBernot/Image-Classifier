@@ -3,7 +3,9 @@ import random
 from period_detections import cluster_dates, plot_clusters, print_period_suggestion
 
 def generate_random_dates() -> list[datetime]:
-
+    """
+    Generates random dates for testing purposes.
+    """
     # Generate a mix of dense and sparse dates
     dense_start = datetime(2023, 1, 1)
     sparse_start = datetime(2023, 2, 1)

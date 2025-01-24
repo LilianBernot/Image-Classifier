@@ -1,7 +1,9 @@
 import shutil
 
 def move_file(source:str, destination:str):
-    # Move the file
+    """
+    Moves the file source to the destination.
+    """
     try:
         shutil.move(source, destination)
         # print(f"File moved successfully to {destination}")
