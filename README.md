@@ -33,3 +33,7 @@ Use : ```make init root_folder=<your_folder> period_file=<your_period_file>```.
 For the root_folder, same as above.
 
 For the period_file, it's an optional parameter. You might have defined the period file somewhere else and you want to point at it.
+
+# About dates
+
+I chose to have non-strict comparisons. Meaning : if a period goes from X to Y, both days are included. So next period can only start on the X+1 day.
