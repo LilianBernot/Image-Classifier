@@ -3,6 +3,7 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 from read_periods import get_periods
 from utils_dates import get_fitting_periods
+from env import PERIOD
 
 # Specify the folder path
 folder_path = "./data"
@@ -25,23 +26,27 @@ def get_datetime_image(image_path:str) -> str | None:
 
 
 # Iterate through all files in the folder
-def get_datetimes_folder_images(folder_path):
+def get_periods_from_images(images: list[str]) -> list[PERIOD | None]:
 
     dates: list[str|None] = []
-    for filename in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, filename)
+    for image_path in images:
+        dates.append(get_datetime_image(image_path))
 
-        # Recursive : to do later
-        # if os.path.isdir(file_path):
-        #     get_datetimes_folder_images(file_path)
-        #     return
-
-        dates.append(get_datetime_image(file_path))
-    print(dates)
     periods = get_periods('periods.txt')
 
     fitting_periods = get_fitting_periods(periods_list=periods, dates=dates)
 
+    return fitting_periods
+
+def get_periods_folder_images(folder_path: str):
+
+    explored_images: list[str] = []
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
+        explored_images.append(file_path)
+
+    fitting_periods = get_periods_from_images(explored_images)
+
     print(fitting_periods)
 
-get_datetimes_folder_images(folder_path)
+get_periods_folder_images(folder_path)
