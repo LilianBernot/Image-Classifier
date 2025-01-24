@@ -44,6 +44,10 @@ def get_periods_folder_images(folder_path: str):
 
     explored_images: list[str] = []
     for image_name in os.listdir(folder_path):
+        if not os.path.isfile(os.path.join(folder_path, image_name)):
+            # If it's a folder, we don't look in it for now. 
+            # TODO : recursively check in the folders. Has to be a command line option
+            continue
         explored_images.append(image_name)
 
     fitting_periods = get_periods_from_images(folder_path, explored_images)
@@ -54,12 +58,11 @@ def get_periods_folder_images(folder_path: str):
         if not period:
             issues.append(os.path.join(folder_path, image_name))
         else:
-            fitting_folder = get_period_folder_name(period)
-            move_file(os.path.join(folder_path, image_name), os.path.join(fitting_folder, image_name))
+            fitting_folder_name = get_period_folder_name(period)
+            move_file(os.path.join(folder_path, image_name), os.path.join(folder_path, fitting_folder_name, image_name))
 
     if issues:
-        print(f"We got issues with the following images : {issues}. Impossible to find a corresponding period.")
-    else:
-        print("No issues, all images moved correctly !")
+        print(f"We got issues with the following {len(issues)} images : {issues}. Impossible to find a corresponding period.")
+    print(f"Images moved correctly: {len(explored_images) - len(issues)}.")
 
 get_periods_folder_images(folder_path)

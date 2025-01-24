@@ -47,11 +47,11 @@ def get_period_folder_name(period:PERIOD) -> str:
 
     return newpath
 
-def create_periods_folders(periods_data:list[PERIOD]):
+def create_periods_folders(periods_data:list[PERIOD], root_folder='.'):
     for period in periods_data:
-        newpath = get_period_folder_name(period)
+        newpath = os.path.join(root_folder, get_period_folder_name(period))
 
         if not os.path.exists(newpath):
             os.makedirs(newpath)
 
-create_periods_folders(get_periods(periods_file))
+create_periods_folders(get_periods(periods_file), root_folder='./data')
