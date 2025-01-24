@@ -15,6 +15,8 @@ This project aims at helping to classify one's photos : you define periods of ti
 The code has, for now, two main commands you can run : 
 - ```make init``` : will initialize the file to define your periods
 - ```make move``` : will create the folder from the period file and move the pictures 
+- ```make detect``` : will detect periods in the corpus and offer suggestion 
+
 
 More details lower.
 
@@ -30,9 +32,15 @@ The root folder will be used as the target to create the template for the period
 
 Use : ```make init root_folder=<your_folder> period_file=<your_period_file>```.
 
-For the root_folder, same as above.
-
 For the period_file, it's an optional parameter. You might have defined the period file somewhere else and you want to point at it.
+
+## make detect
+
+Use : ```make detect root_folder=<your_folder>```.
+
+It will detect periods with the density of taken pictures using DBSCAN. It will show the DBSCAN results in a plot.
+
+It will print suggestions to be directly copy-pasted to your ```periods.txt``` file.
 
 # About dates
 
