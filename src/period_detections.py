@@ -104,3 +104,9 @@ def get_period_suggestion(folder_path):
     Plots cluster dates and gives suggestion to the user.
     """
     plot_dates_clusters(folder_path, suggest_period=True)
+
+
+if __name__ == "__main__":
+    import sys
+
+    get_period_suggestion(sys.argv[1])
