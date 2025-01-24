@@ -19,7 +19,7 @@ def check_date_is_in_period(period:tuple[datetime, datetime], date:str | datetim
         date = convert_str_to_datetime(date) 
 
     is_sup = period[0] <= date
-    is_inf = date < period[1]
+    is_inf = date <= period[1]
 
     return is_sup and is_inf
 
