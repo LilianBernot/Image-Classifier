@@ -66,9 +66,12 @@ def plot_clusters(dates, clusters):
     plt.show()
 
 
-def plot_dates_clusters(folder_path: str):
+def plot_dates_clusters(folder_path: str, suggest_period=False):
     """
     This function plots the DBSCAN of dates from a given folder.
+
+    Variable : 
+        - suggest_period (bool) : if we want suggestion or not.
     """
     dates = []
     for image_name in os.listdir(folder_path):
@@ -77,6 +80,10 @@ def plot_dates_clusters(folder_path: str):
             dates.append(convert_str_to_datetime(get_datetime_image(image_path)))
 
     clusters = cluster_dates(dates)
+
+    if suggest_period:
+        print_period_suggestion(clusters=clusters)
+
     plot_clusters(dates, clusters)
 
 def print_period_suggestion(clusters):
@@ -91,3 +98,9 @@ def print_period_suggestion(clusters):
     print("\n--- Suggested cluster periods : ---\n")
     print(suggested_periods)
     print("-------------------------------------\n")
+
+def get_period_suggestion(folder_path):
+    """
+    Plots cluster dates and gives suggestion to the user.
+    """
+    plot_dates_clusters(folder_path, suggest_period=True)
