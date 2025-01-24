@@ -4,7 +4,7 @@ def move_file(source:str, destination:str):
     # Move the file
     try:
         shutil.move(source, destination)
-        print(f"File moved successfully to {destination}")
+        # print(f"File moved successfully to {destination}")
     except FileNotFoundError:
         print(f"The file {source} does not exist.")
     except PermissionError:
