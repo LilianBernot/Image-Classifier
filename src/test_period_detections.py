@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import random
+from period_detections import cluster_dates, plot_clusters, print_period_suggestion
 
 def generate_random_dates() -> list[datetime]:
 
@@ -21,3 +22,23 @@ def generate_random_dates() -> list[datetime]:
     all_dates = dense_dates + sparse_dates + second_dense_dates
 
     return sorted(all_dates)
+
+
+def plot_test_dates_clusters():
+    """
+    This function plots the DBSCAN of dates from test data.
+    """
+    dates = generate_random_dates()
+    clusters = cluster_dates(dates)
+    plot_clusters(dates, clusters)
+
+def get_test_suggestion_periods():
+
+    dates = generate_random_dates()
+    clusters = cluster_dates(dates)
+
+    print_period_suggestion(clusters)
+
+    plot_test_dates_clusters()
+
+get_test_suggestion_periods()

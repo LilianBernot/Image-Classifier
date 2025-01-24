@@ -5,7 +5,6 @@ import numpy as np
 from sklearn.cluster import DBSCAN
 import matplotlib.pyplot as plt
 from datetime import timedelta, datetime
-from test_data import generate_random_dates
 
 def cluster_dates(dates: list[datetime]) -> dict:
     """
@@ -28,6 +27,21 @@ def cluster_dates(dates: list[datetime]) -> dict:
 
     return clusters
 
+def get_cluster_periods(clusters):
+    """
+    Gets the cluster periods by computing min and max dates.
+    Returns : tuple (label, start, end)
+    """
+    cluster_periods: list[tuple[int, datetime, datetime]] = []
+    for cluster_label, cluster_dates in clusters.items():
+        if cluster_label == -1:  # Noise
+            continue
+        cluster_start = min(cluster_dates)
+        cluster_end = max(cluster_dates)
+        cluster_periods.append((cluster_label, cluster_start, cluster_end))
+
+    return cluster_periods
+
 def plot_clusters(dates, clusters):
     """
     This function plots the given dates and clusters from the DBSCAN.
@@ -39,12 +53,9 @@ def plot_clusters(dates, clusters):
     plt.hist(dates, bins=bin_edges, color='skyblue', alpha=0.7, label='Date Histogram')
 
     # Overlay cluster boundaries
-    for cluster_label, cluster_dates in clusters.items():
-        if cluster_label == -1:  # Noise
-            continue
-        cluster_start = min(cluster_dates)
-        cluster_end = max(cluster_dates)
-        plt.axvspan(cluster_start, cluster_end, color='orange', alpha=0.3, label=f'Cluster {cluster_label}')
+    cluster_periods = get_cluster_periods(clusters=clusters)
+    for label, start, end in cluster_periods:
+        plt.axvspan(start, end, color='orange', alpha=0.3, label=f'Cluster {label}')
 
     # Formatting
     plt.xlabel('Date')
@@ -68,13 +79,15 @@ def plot_dates_clusters(folder_path: str):
     clusters = cluster_dates(dates)
     plot_clusters(dates, clusters)
 
-def plot_test_dates_clusters():
+def print_period_suggestion(clusters):
     """
-    This function plots the DBSCAN of dates from test data.
+    Prints period suggestion out of 
     """
-    dates = generate_random_dates()
-    clusters = cluster_dates(dates)
-    plot_clusters(dates, clusters)
+    cluster_periods = get_cluster_periods(clusters=clusters)
+    suggested_periods = ""
+    for label, start, end in cluster_periods:
+        suggested_periods += start.strftime('%Y-%m-%d') + ' to ' + end.strftime('%Y-%m-%d') + '\n'
 
-
-plot_test_dates_clusters()
+    print("\n--- Suggested cluster periods : ---\n")
+    print(suggested_periods)
+    print("-------------------------------------\n")
