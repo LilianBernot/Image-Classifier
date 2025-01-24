@@ -1,4 +1,5 @@
 import re
+import os
 
 # Path to the periods file
 periods_file = "periods.txt"
@@ -32,6 +33,16 @@ def get_periods(periods_file):
 
     return date_periods
 
-# Print the extracted periods
-for date1, date2, location in get_periods(periods_file):
-    print(f"Start Date: {date1}, End Date: {date2}, Location: {location}")
+def create_periods_folders(periods_data:list[tuple[str, str, str]]):
+
+    for start, end, location in periods_data:
+        if location:
+            # convert tolcation to Snakecase
+            newpath = location[0].upper() + location[1:].lower()
+        else:
+            newpath = start + '_' + end
+
+        if not os.path.exists(newpath):
+            os.makedirs(newpath)
+
+create_periods_folders(get_periods(periods_file))
