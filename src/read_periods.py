@@ -2,6 +2,20 @@ import re
 import os
 from env import PERIOD
 
+def check_overlapping_periods(periods:list[PERIOD]):
+    for i in range(len(periods)):
+        if periods[i][0] > periods[i][1]:
+            raise ValueError(f"Period {periods[i]} has end date before starting date !")
+
+    periods.sort(key=lambda x: x[0])
+    # We sort the periods by the start date
+
+    for i in range(len(periods) - 1):
+        if periods[i][1] >= periods[i+1][0]:
+            # We want the end date of i to be strictly lower than start date of i+1
+            raise ValueError(f"Periods {periods[i]} and {periods[i+1]} are overlapping !")
+    
+
 def get_periods(periods_file: str) -> list[PERIOD]:
 
     # Regular expression to match the date range: "YYYY-MM-DD to YYYY-MM-DD"
@@ -31,6 +45,8 @@ def get_periods(periods_file: str) -> list[PERIOD]:
                 raise ValueError(f"The period [{line}] is not recognized.")
             
             date_periods.append((start_date, end_date, location))
+
+    check_overlapping_periods(date_periods)
 
     return date_periods
 
