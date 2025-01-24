@@ -1,4 +1,6 @@
 TEMPLATE_FILE=periods.txt
+PYTHON=python3  # Define the Python interpreter
+SCRIPT=src/read_image.py  # Path to your Python script
 
 init:
 	@if [ -s $(TEMPLATE_FILE) ]; then \
@@ -21,3 +23,9 @@ init:
 	@echo "# Enter your periods below:" >> $(TEMPLATE_FILE)
 	@echo "Template created: $(TEMPLATE_FILE)"
 
+move:
+	@if [ -z "$(root_folder)" ]; then \
+		echo "Usage: make move root_folder=<path_to_root_folder>"; \
+		exit 1; \
+	fi; \
+	$(PYTHON) $(SCRIPT) $(root_folder)

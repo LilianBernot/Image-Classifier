@@ -40,7 +40,7 @@ def get_periods_from_images(folder_path, images: list[str]) -> list[PERIOD | Non
 
     return fitting_periods
 
-def get_periods_folder_images(folder_path: str):
+def move_folder_images(folder_path: str):
 
     explored_images: list[str] = []
     for image_name in os.listdir(folder_path):
@@ -65,4 +65,7 @@ def get_periods_folder_images(folder_path: str):
         print(f"We got issues with the following {len(issues)} images : {issues}. Impossible to find a corresponding period.")
     print(f"Images moved correctly: {len(explored_images) - len(issues)}.")
 
-get_periods_folder_images(folder_path)
+
+if __name__ == "__main__":
+    import sys
+    move_folder_images(sys.argv[1])
