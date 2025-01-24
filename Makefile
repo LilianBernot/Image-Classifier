@@ -25,7 +25,7 @@ init:
 
 move:
 	@if [ -z "$(root_folder)" ]; then \
-		echo "Usage: make move root_folder=<path_to_root_folder>"; \
+		echo "Usage: make move root_folder=<path_to_root_folder> [period_file=<path_to_period_file>]"; \
 		exit 1; \
 	fi; \
-	$(PYTHON) $(SCRIPT) $(root_folder)
+	$(PYTHON) $(SCRIPT) $(root_folder) $(period_file)
