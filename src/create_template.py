@@ -1,6 +1,18 @@
 import os
+from env import DEFAULT_PERIOD_FILE_NAME
 
-def create_template_file(root_folder:str, template_file:str):
+def update_template_file(root_folder:str, content:str, template_file=DEFAULT_PERIOD_FILE_NAME):
+    """
+    Updates the template file with the given content.
+    """
+    file_path = os.path.join(root_folder, template_file)
+    
+    with open(file_path, "a") as f:
+        f.write(content)
+
+    print(f"Template updated: {file_path}")
+
+def create_template_file(root_folder:str, template_file=DEFAULT_PERIOD_FILE_NAME):
     """
     Creates the template periods file.
     """
@@ -29,7 +41,6 @@ def create_template_file(root_folder:str, template_file:str):
 if __name__ == "__main__":
     import sys
 
-    DEFAULT_PERIOD_FILE_NAME='periods.txt'
     root_folder = sys.argv[1]
     periods_file_name = sys.argv[2] if len(sys.argv) >= 3 else DEFAULT_PERIOD_FILE_NAME
 

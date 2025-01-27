@@ -5,6 +5,8 @@ import numpy as np
 from sklearn.cluster import DBSCAN
 import matplotlib.pyplot as plt
 from datetime import timedelta, datetime
+from utils.user_input import ask_user
+from create_template import create_template_file, update_template_file
 
 def cluster_dates(dates: list[datetime]) -> dict:
     """
@@ -65,26 +67,26 @@ def plot_clusters(dates, clusters):
     plt.grid()
     plt.show()
 
-def ask_user():
-    while True:
-        response = input("Do you want to continue? (yes/no): ").strip().lower()
-        if response in ["yes", "no"]:
-            return response
-        else:
-            print("Invalid input. Please enter 'yes' or 'no'.")
 
-def user_input():
-    print("Hello! This is an example function.")
-    answer = ask_user()
-    if answer == "yes":
-        # TODO : update periods.txt file
-        print("You chose to continue!")
-    elif answer == "no":
-        print("You chose not to continue!")
-
-def print_period_suggestion(clusters):
+def user_accpts_suggestion(root_folder:str, period_suggestions:str):
     """
-    Prints period suggestion out of 
+    Asks the user to accept or not the offered suggestions.
+    If accepts, it updates the periods file with the given suggestions.
+    """
+    if ask_user():
+        print("You accepted the changes, we updated your periods.txt file :")
+
+        create_template_file(root_folder=root_folder)
+
+        update_template_file(root_folder=root_folder, content=period_suggestions)
+
+
+def print_period_suggestion(clusters) -> str:
+    """
+    Prints period suggestion out of the given clusters.
+
+    Returns :
+        - The detected periods formatted in strings
     """
     cluster_periods = get_cluster_periods(clusters=clusters)
     suggested_periods = ""
@@ -95,23 +97,26 @@ def print_period_suggestion(clusters):
     print(suggested_periods)
     print("-------------------------------------\n")
 
-    user_input()
+    return suggested_periods
 
-def get_period_suggestion(folder_path):
+
+def get_period_suggestion(root_folder):
     """
     Plots cluster dates and gives suggestion to the user.
     """
     dates = []
-    for image_name in os.listdir(folder_path):
-        image_path = os.path.join(folder_path, image_name)
+    for image_name in os.listdir(root_folder):
+        image_path = os.path.join(root_folder, image_name)
         if os.path.isfile(image_path) and not image_path[-4:]  in ['.txt', '.mp4']:
             dates.append(convert_str_to_datetime(get_datetime_image(image_path)))
 
     clusters = cluster_dates(dates)
 
+    period_suggestions = print_period_suggestion(clusters=clusters)
+
     plot_clusters(dates, clusters)
 
-    print_period_suggestion(clusters=clusters)
+    user_accpts_suggestion(root_folder, period_suggestions)
 
 
 if __name__ == "__main__":
