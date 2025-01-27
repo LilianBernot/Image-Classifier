@@ -18,6 +18,7 @@ init:
 		fi; \
 	fi; 
 	$(PYTHON) $(TEMPLATE_SCRIPT) $(root_folder) $(TEMPLATE_FILE)
+
 move:
 	@if [ -z "$(root_folder)" ]; then \
 		echo "Usage: make move root_folder=<path_to_root_folder> [period_file=<path_to_period_file>]"; \
@@ -27,7 +28,7 @@ move:
 
 detect:
 	@if [ -z "$(root_folder)" ]; then \
-		echo "Usage: make move root_folder=<path_to_root_folder>; \
+		echo "Usage: make detect root_folder=<path_to_root_folder> [period_file=<path_to_period_file>]"; \
 		exit 1; \
 	fi; \
 	$(PYTHON) $(DETECTION_SCRIPT) $(root_folder)

@@ -65,26 +65,22 @@ def plot_clusters(dates, clusters):
     plt.grid()
     plt.show()
 
+def ask_user():
+    while True:
+        response = input("Do you want to continue? (yes/no): ").strip().lower()
+        if response in ["yes", "no"]:
+            return response
+        else:
+            print("Invalid input. Please enter 'yes' or 'no'.")
 
-def plot_dates_clusters(folder_path: str, suggest_period=False):
-    """
-    This function plots the DBSCAN of dates from a given folder.
-
-    Variable : 
-        - suggest_period (bool) : if we want suggestion or not.
-    """
-    dates = []
-    for image_name in os.listdir(folder_path):
-        image_path = os.path.join(folder_path, image_name)
-        if os.path.isfile(image_path) and not image_path[-4:]  in ['.txt', '.mp4']:
-            dates.append(convert_str_to_datetime(get_datetime_image(image_path)))
-
-    clusters = cluster_dates(dates)
-
-    if suggest_period:
-        print_period_suggestion(clusters=clusters)
-
-    plot_clusters(dates, clusters)
+def user_input():
+    print("Hello! This is an example function.")
+    answer = ask_user()
+    if answer == "yes":
+        # TODO : update periods.txt file
+        print("You chose to continue!")
+    elif answer == "no":
+        print("You chose not to continue!")
 
 def print_period_suggestion(clusters):
     """
@@ -99,11 +95,23 @@ def print_period_suggestion(clusters):
     print(suggested_periods)
     print("-------------------------------------\n")
 
+    user_input()
+
 def get_period_suggestion(folder_path):
     """
     Plots cluster dates and gives suggestion to the user.
     """
-    plot_dates_clusters(folder_path, suggest_period=True)
+    dates = []
+    for image_name in os.listdir(folder_path):
+        image_path = os.path.join(folder_path, image_name)
+        if os.path.isfile(image_path) and not image_path[-4:]  in ['.txt', '.mp4']:
+            dates.append(convert_str_to_datetime(get_datetime_image(image_path)))
+
+    clusters = cluster_dates(dates)
+
+    plot_clusters(dates, clusters)
+
+    print_period_suggestion(clusters=clusters)
 
 
 if __name__ == "__main__":

@@ -43,4 +43,6 @@ def get_test_suggestion_periods():
 
     plot_test_dates_clusters()
 
-get_test_suggestion_periods()
+
+if __name__ == "__main__":
+    get_test_suggestion_periods()
