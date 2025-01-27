@@ -68,7 +68,7 @@ def plot_clusters(dates, clusters):
     plt.show()
 
 
-def user_accpts_suggestion(root_folder:str, period_suggestions:str):
+def user_accepts_suggestion(root_folder:str, period_suggestions:str):
     """
     Asks the user to accept or not the offered suggestions.
     If accepts, it updates the periods file with the given suggestions.
@@ -116,7 +116,7 @@ def get_period_suggestion(root_folder):
 
     plot_clusters(dates, clusters)
 
-    user_accpts_suggestion(root_folder, period_suggestions)
+    user_accepts_suggestion(root_folder, period_suggestions)
 
 
 if __name__ == "__main__":

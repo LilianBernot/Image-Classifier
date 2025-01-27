@@ -3,6 +3,7 @@ PYTHON=python3  # Define the Python interpreter
 MOVE_SCRIPT=src/read_image.py  # Path to your Python script
 TEMPLATE_SCRIPT=src/create_template.py
 DETECTION_SCRIPT=src/period_detections.py
+TEST_SCRIPT=src/test_period_detections.py
 
 init:
 	@if [ -z "$(root_folder)" ]; then \
@@ -32,3 +33,6 @@ detect:
 		exit 1; \
 	fi; \
 	$(PYTHON) $(DETECTION_SCRIPT) $(root_folder)
+
+test_suggestion:
+	$(PYTHON) $(TEST_SCRIPT)

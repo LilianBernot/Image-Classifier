@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 import random
-from period_detections import cluster_dates, plot_clusters, print_period_suggestion
+from period_detections import cluster_dates, plot_clusters, print_period_suggestion, user_accepts_suggestion
 
 def generate_random_dates() -> list[datetime]:
     """
@@ -39,9 +39,11 @@ def get_test_suggestion_periods():
     dates = generate_random_dates()
     clusters = cluster_dates(dates)
 
-    print_period_suggestion(clusters)
+    period_suggestions = print_period_suggestion(clusters)
 
     plot_test_dates_clusters()
+
+    user_accepts_suggestion(root_folder='./test/', period_suggestions=period_suggestions)
 
 
 if __name__ == "__main__":
