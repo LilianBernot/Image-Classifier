@@ -64,3 +64,5 @@ Checks on dates :
 # Potential imrovements 
 
 For now, only ```.svg``` pictures are taken into account. An improvement would be to take into account more picture formats.
+
+Some classification with location could be developped. It was not in the scope at first as I personnally never have my location activated but I guess it could be useful to many people !
